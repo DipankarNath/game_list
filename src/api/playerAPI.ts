@@ -7,5 +7,4 @@ export function addNewPlayer(player: PlayerType) {
     });
 }
 
-// external API to fetch players data
 // https://my-json-server.typicode.com/cb-dipankarnath/dataForTask/playerList
