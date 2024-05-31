@@ -7,5 +7,11 @@ export function addNewPlayer(player: PlayerType) {
     });
 }
 
+export function updateExistingPlayer(player: PlayerType) {
+    return new Promise<{ data: PlayerType }>((resolve) => {
+        setTimeout(() => resolve({ data: player }), 500);
+    });
+}
+
 // external API to fetch players data
 // https://my-json-server.typicode.com/cb-dipankarnath/dataForTask/playerList

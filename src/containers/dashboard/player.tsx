@@ -6,23 +6,25 @@ type OnChangeType = { type: 'NAME', value: string } | { type: 'AGE', value: numb
 const Player = ({ player, onSaveUpdate, isInput = false }: { player: PlayerType, onSaveUpdate: (player: PlayerType) => void, isInput?: boolean }) => {
 	const [name, setName] = useState<string>(player.name || '');
 	const [age, setAge] = useState<number | null>(player.age);
-	const [enableSaveBtn, setEnableSaveBtn] = useState<boolean>(false);
 	const [error, setError] = useState<string>('');
 
 
 	const onChange = ({ type, value }: OnChangeType) => {
-	  if (type === 'AGE') {
-			setAge(value);
-	} else {
-			setName(value);
-	}
-	  setEnableSaveBtn(validateInputs(type, value));
+		type === 'AGE' ? setAge(value) : setName(value);
 	};
 
-	const validateInputs = (type: string, value: any): boolean => {
-	  const res = (type === 'AGE') ? (value >= 15 && value <= 60) : /^[a-zA-Z0-9 ]{3,}$/.test(value);
-	  setError(res ? '' : 'The name must be alphanumeric, and the age should be between 15 and 60.');
-	  return res;
+	const validateInputs = (): boolean => !!((age && age >= 15 && age <= 60) && /^[a-zA-Z0-9 ]{3,}$/.test(name));
+
+	const handleClick = () => {
+		if (validateInputs()) {
+			onSaveUpdate({ ...player, name, age });
+			if (isInput) {
+				setAge(null);
+				setName('');
+			}
+		} else {
+			setError('The name must be alphanumeric, and the age should be between 15 and 60.');
+		}
 	}
 
 
@@ -44,15 +46,8 @@ const Player = ({ player, onSaveUpdate, isInput = false }: { player: PlayerType,
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ type: 'AGE', value: Number(e.target.value) })}
 			/>
 			<button
-				disabled={!enableSaveBtn}
-				onClick={() => {
-					onSaveUpdate({ ...player, name, age });
-					if (isInput) {
-						setAge(null);
-						setName('');
-					}
-					setEnableSaveBtn(false);
-				}}
+				disabled={(player.name === name && player.age === age)}
+				onClick={() => { handleClick(); }}
 			>
 					{(player.name && player.age) ? 'Save' : 'Add'}
 			</button>

@@ -1,6 +1,6 @@
 
 export interface PlayerType {
-  id: string;
+  id?: string;
   name: string;
   age: number | null;
   team: string;

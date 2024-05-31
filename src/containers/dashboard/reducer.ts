@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addNewPlayer } from './../../api/playerAPI';
+import { v4 as uuidv4 } from 'uuid';
+
 import { PlayerType, DashboardState } from './types';
+import { addNewPlayer, updateExistingPlayer } from './../../api/playerAPI';
 
 const initialState: DashboardState = {
   data: {
@@ -95,7 +97,15 @@ const initialState: DashboardState = {
 export const addPlayer = createAsyncThunk(
   'dashboard/player/addNew',
   async (player: PlayerType) => {
-    const response = await addNewPlayer(player);
+    const response = await addNewPlayer({ id: uuidv4(), ...player });
+    return { data: response.data, message: ''};
+  }
+);
+
+export const updatePlayer = createAsyncThunk(
+  'dashboard/player/updatePlayer',
+  async (player: PlayerType) => {
+    const response = await updateExistingPlayer(player);
     return { data: response.data, message: ''};
   }
 );
@@ -103,14 +113,7 @@ export const addPlayer = createAsyncThunk(
 export const counterSlice = createSlice({
   name: 'dashboard',
   initialState,
-  reducers: {
-    updatePlayer(state, action) {
-      const index = state.data.playerList.findIndex(item => item.id === action.payload.id);
-      if (index !== -1) {
-        state.data.playerList[index] = { ...state.data.playerList[index], ...action.payload };
-      }
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(addPlayer.pending, (state) => {
@@ -123,7 +126,20 @@ export const counterSlice = createSlice({
       .addCase(addPlayer.rejected, (state) => {
         state.status = 'failed';
       })
+      .addCase(updatePlayer.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updatePlayer.fulfilled, (state, action) => {
+        state.status = 'idle';
+        const index = state.data.playerList.findIndex(item => item.id === action.payload.data.id);
+        if (index !== -1) {
+          state.data.playerList[index] = { ...state.data.playerList[index], ...action.payload.data };
+        }
+      })
+      .addCase(updatePlayer.rejected, (state) => {
+        state.status = 'failed';
+      })
   },
 });
-export const { updatePlayer } = counterSlice.actions;
+
 export default counterSlice.reducer;
