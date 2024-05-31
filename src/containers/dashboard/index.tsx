@@ -1,70 +1,22 @@
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { addPlayer } from './reducer';
+import { addPlayer, updatePlayer } from './reducer';
 import { PlayerType, TeamMapType } from './types';
 
-const isExistingPlayer = (player: PlayerType): boolean => {
-  return !!(player.name && player.age);
-};
-
-const Player = ({ player, onSaveUpdate }: { player: PlayerType, onSaveUpdate: (player: PlayerType) => void }) => {
-  const [name, setName] = useState(player.name || '');
-  const [age, setAge] = useState(player.age || 0);
-  const [enableSaveBtn, setEnableSaveBtn] = useState(false);
-  const [error, setError] = useState('');
-
-  /*
-    Problem Statement:
-    1. The save button should be enabled when the name has at least 3 characters and age is between 15 & 60, but this is currently not functioning as expected, fix this error.
-    2. Enhance the validation logic to validate and show message specific to the name and age errors.
-    3. Add unit test cases to verify the `validateInputs` functionality.
-  */
-
-  /** code with error starts here */
-  const onChange = (type: string, value: any) => {
-    type === 'age' ? setAge(value) : setName(value);
-    setEnableSaveBtn(validateInputs(type, type === 'age' ? age : name));
-  };
-
-  const validateInputs = (type: string, value: any): boolean => {
-    const res = (type === 'age') ? ((value || 0) > 15 && (value || 0) < 60) : /^[a-zA-Z0-9 ]{3,}$/.test(value);
-    setError(res ? '' : 'The name must be alphanumeric, and the age should be between 15 and 60.');
-    return res;
-  }
-  /** code with error ends here */
-
-  /** solution code starts here */
-  // const onChange = (type: string, value: any) => {
-  //   type === 'age' ? setAge(value) : setName(value);
-  //   setEnableSaveBtn(validateInputs(type, value));
-  // };
-
-  // const validateInputs = (type: string, value: any): boolean => {
-  //   const res = (type === 'age') ? ((value || 0) > 15 && (value || 0) < 60) : /^[a-zA-Z0-9 ]{3,}$/.test(value);
-  //   setError(res ? '' : 'The name must be alphanumeric, and the age should be between 15 and 60.');
-  //   console.log(res, type, value);
-  //   return res;
-  // }
-  /** solution code ends here */
-
-  return (<div>
-    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '5px', margin: '5px' }}>
-      <input type='text' placeholder='Player Name' value={name} onChange={(e) => onChange('name', e.target.value)} style={{ width: '100px' }}></input>
-      <input type='number' placeholder='age' min={15} max={60} value={age || ''} onChange={(e) => onChange('age', e.target.value)} style={{ width: '50px' }}></input>
-      <button disabled={!enableSaveBtn} onClick={() => onSaveUpdate({ ...player, name, age })}>{(player.name && player.age) ? 'Save' : 'Add'}</button>
-    </div>
-    {!!error &&
-      <div className='error-wrap' style={{ display: 'flex', justifyContent: 'space-between', gap: '5px', margin: '5px' }}>
-        {error}
-      </div>}
-  </div>)
-};
+import Player from './player';
 
 const Dashboard = () => {
   const [teamMap, setTeamMap] = useState({} as TeamMapType);
 
   const playerList = useAppSelector((state) => state.player?.data?.playerList);
   const dispatch = useAppDispatch();
+  
+  const isExistingPlayer = (player: PlayerType): boolean => {
+    const index = playerList.findIndex(({ name }) => name === player.name);
+    return index !== -1;
+  };
 
   useEffect(() => {
     const tempTeamMap = {} as TeamMapType;
@@ -74,28 +26,36 @@ const Dashboard = () => {
     setTeamMap(tempTeamMap);
   }, [playerList]);
 
-  const onSaveUpdate = (player: PlayerType) => {
-    console.log('I am clicked');
-    dispatch(addPlayer(player));
+  const onSaveUpdate = (player: PlayerType, isInput: boolean) => {
+    const isExisting = isExistingPlayer(player);
+    if (isExisting) {
+      alert('Player Already Exists!!');
+    } else {
+      if (isInput) {
+        dispatch(addPlayer(player));
+      } else {
+        dispatch(updatePlayer(player))
+      }
+    }
   };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '50px' }}>
       <div style={{ border: '1px solid #ededed', width: '300px', borderRadius: '3px', overflow: 'hidden' }}>
-        {Object.keys(teamMap).map((sport) => <>
+        {Object.keys(teamMap).map((sport, index) => <div key={`${sport}__${index}`}>
           <div className="sport-head">{sport}</div>
-          {Object.keys(teamMap[sport]).map((team) => <>
+          {Object.keys(teamMap[sport]).map((team, index) => <div key={`${team}__${index}`}>
             <div className="sport-body">
               <div className="team-head">{team} ({teamMap[sport][team].length})</div>
               <div className="team-body">
-                <Player player={{ name: '', age: null, team, sport }} onSaveUpdate={onSaveUpdate} />
+                <Player player={{ id: uuidv4(), name: '', age: null, team, sport }} onSaveUpdate={(player) => onSaveUpdate(player, true)} isInput={true} />
                 {teamMap[sport][team].map((player, index) =>
-                  <Player key={`${player.name}${index}`} player={player} onSaveUpdate={onSaveUpdate} />
+                  <Player key={`${player.name}__${index}`} player={player} onSaveUpdate={(player) => onSaveUpdate(player, false)} />
                 )}
               </div>
             </div>
-          </>)}
-        </>)}
+          </div>)}
+        </div>)}
       </div>
     </div>
   )
