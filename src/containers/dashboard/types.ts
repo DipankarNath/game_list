@@ -1,5 +1,6 @@
 
 export interface PlayerType {
+  id: string;
   name: string;
   age: number | null;
   team: string;
