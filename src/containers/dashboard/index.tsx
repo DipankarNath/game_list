@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { addPlayer, updatePlayer } from './reducer';
@@ -28,14 +27,14 @@ const Dashboard = () => {
 
   const onSaveUpdate = (player: PlayerType, isInput: boolean) => {
     const isExisting = isExistingPlayer(player);
-    if (isExisting) {
-      alert('Player Already Exists!!');
-    } else {
-      if (isInput) {
-        dispatch(addPlayer(player));
+    if (isInput) {
+      if (isExisting) {
+        alert('Player Already Exist With That Name!!');
       } else {
-        dispatch(updatePlayer(player))
+        dispatch(addPlayer(player));
       }
+    } else {
+      dispatch(updatePlayer(player))
     }
   };
 
@@ -48,7 +47,7 @@ const Dashboard = () => {
             <div className="sport-body">
               <div className="team-head">{team} ({teamMap[sport][team].length})</div>
               <div className="team-body">
-                <Player player={{ id: uuidv4(), name: '', age: null, team, sport }} onSaveUpdate={(player) => onSaveUpdate(player, true)} isInput={true} />
+                <Player player={{ name: '', age: null, team, sport }} onSaveUpdate={(player) => onSaveUpdate(player, true)} isInput={true} />
                 {teamMap[sport][team].map((player, index) =>
                   <Player key={`${player.name}__${index}`} player={player} onSaveUpdate={(player) => onSaveUpdate(player, false)} />
                 )}
