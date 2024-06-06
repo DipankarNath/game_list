@@ -1,11 +1,10 @@
-
 declare interface PlayerType {
   id?: string;
   name: string;
   age: number | null;
   team: string;
   sport: string;
-};
+}
 
 declare interface Team {
   name: string;
@@ -24,7 +23,13 @@ declare interface DashboardState {
     teamList?: Team[];
     sportList?: Sport[];
   };
-  status: 'idle' | 'loading' | 'failed';
+  status: "idle" | "loading" | "failed";
 }
 
-declare interface TeamMapType { [key: string]: { [key: string]: Array<PlayerType> } }
+declare interface TeamMapType {
+  [key: string]: { [key: string]: Array<PlayerType> };
+}
+
+declare type OnChangeType =
+  | { type: "NAME"; value: string }
+  | { type: "AGE"; value: number };

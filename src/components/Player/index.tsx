@@ -1,18 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-type OnChangeType =
-  | { type: "NAME"; value: string }
-  | { type: "AGE"; value: number };
-
-const Player = ({
-  player,
-  onSaveUpdate,
-  isInput = false,
-}: {
+const Player: React.FC<{
   player: PlayerType;
   onSaveUpdate: (player: PlayerType) => void;
   isInput?: boolean;
-}) => {
+}> = ({ player, onSaveUpdate, isInput = false }) => {
   const [name, setName] = useState<string>(player.name || "");
   const [age, setAge] = useState<number | null>(player.age);
   const [error, setError] = useState<string>("");
