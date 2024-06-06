@@ -38,50 +38,50 @@
   }
 }
 
-input {
+/* input {
   background-color: #ededed;
   border: none;
   border-radius: 3px;
   padding: 7px;
   font-size: 12px;
-  /* border: 1px solid lightgray; */
-}
+  border: 1px solid lightgray;
+} */
 
-input:focus {
+/* input:focus {
   outline: none;
-}
+} */
 
-button {
-  /* background-color: #AF86F1;
-  border: 1px solid #AF86F1; */
+/* button {
+  background-color: #AF86F1;
+  border: 1px solid #AF86F1;
   background-color: #005e91;
   border: 1px solid #005e91;
   border-radius: 3px;
   color: white;
   width: 60px;
-}
+} */
 
-button:hover {
+/* button:hover {
   background-color: #005e91;
   border: 1px solid #005e91;
-  /* font-weight: bold; */
+  font-weight: bold;
   cursor: pointer;
-}
+} */
 
-button:disabled {
+/* button:disabled {
   background-color: #b8e5fd;
   border: 1px solid #b8e5fd;
   border-radius: 3px;
   color: white;
   cursor: not-allowed;
-}
+} */
 
 .sport-head {
   background-color: #ededed;
   width: 100%;
   font-weight: bold;
   text-align: left;
-  padding: 10px
+  padding: 10px;
 }
 
 .sport-body {
@@ -90,7 +90,7 @@ button:disabled {
 
 .team-head {
   padding: 0 10px;
-  text-align: left;;
+  text-align: left;
 }
 .team-body {
   padding: 10px;
