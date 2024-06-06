@@ -48,11 +48,11 @@ const Dashboard = () => {
             <div className="text-lg font-bold bg-slate-200 p-2">{sport}</div>
             {Object.keys(teamMap[sport]).map((team, index) => (
               <div key={`${team}__${index}`}>
-                <div className="sport-body">
+                <div className="p-3">
                   <div className="text-sm font-bold p-2">
                     {team} ({teamMap[sport][team].length})
                   </div>
-                  <div className="team-body">
+                  <div className="p-3">
                     <Player
                       player={{ name: "", age: null, team, sport }}
                       onSaveUpdate={(player) => onSaveUpdate(player, true)}

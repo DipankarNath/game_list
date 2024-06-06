@@ -88,7 +88,9 @@ const Player = ({
         </button>
       </div>
 
-      {!!error && <p className="pl-2 w-[300px] error-wrap">{error}</p>}
+      {!!error && (
+        <p className="pl-2 w-[300px] text-xs text-red-600 pb-3">{error}</p>
+      )}
     </div>
   );
 };
