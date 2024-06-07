@@ -7,28 +7,34 @@ const Player: React.FC<{
 }> = ({player, onSaveUpdate, isInput = false}) => {
     const [name, setName] = useState<string>(player.name || "");
     const [age, setAge] = useState<number | null>(player.age);
+    const [enableSaveBtn, setEnableSaveBtn] = useState(false);
     const [error, setError] = useState<string>("");
 
-    const onChange = ({type, value}: OnChangeType) => {
-        type === "AGE" ? setAge(value) : setName(value);
+    const onChange = ({type, value}: { type: string, value: any }) => {
+        type === 'AGE' ? setAge(value) : setName(value);
+        setEnableSaveBtn(validateInputs(type, type === 'AGE' ? age : name));
     };
 
-    const validateInputs = (): boolean =>
-        !!(age && age >= 15 && age <= 60 && /^[a-zA-Z0-9 ]{3,}$/.test(name));
+    const validateInputs = (type: string, value: any): boolean => {
+        const res = (type === 'age') ? ((value || 0) > 15 && (value || 0) < 60) : /^[a-zA-Z0-9 ]{3,}$/.test(value);
+        setError(res ? '' : 'The name must be alphanumeric, and the age should be between 15 and 60.');
+        return res;
+    }
 
-    const handleClick = () => {
-        if (validateInputs()) {
-            onSaveUpdate({...player, name, age});
-            if (isInput) {
-                setAge(null);
-                setName("");
-            }
-        } else {
-            setError(
-                "The name must be alphanumeric, and the age should be between 15 and 60."
-            );
-        }
-    };
+
+//    const handleClick = () => {
+//        if (validateInputs()) {
+//            onSaveUpdate({...player, name, age});
+//            if (isInput) {
+//                setAge(null);
+//                setName("");
+//            }
+//        } else {
+//            setError(
+//                "The name must be alphanumeric, and the age should be between 15 and 60."
+//            );
+//        }
+//    };
 
     return (
         <div className="flex flex-col">
@@ -47,8 +53,7 @@ const Player: React.FC<{
                         value={name}
                         className="w-full rounded-md border-0 p-2 ring-1 text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-[#005e91]"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            onChange({type: "NAME", value: e.target.value})
-                        }
+                            onChange({type: "NAME", value: e.target.value})}
                     />
                 </div>
                 <div>
@@ -73,8 +78,8 @@ const Player: React.FC<{
                 </div>
                 <button
                     className="cursor-pointer rounded-md bg-[#005e91] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#005e91]/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#005e91] active:bg-[#004469] disabled:bg-[#76a2ba] disabled:cursor-not-allowed"
-                    disabled={player.name === name && player.age === age}
-                    onClick={() => handleClick()}
+                    disabled={!enableSaveBtn}
+                    onClick={() => onSaveUpdate({...player, name, age})}
                 >
                     {player?.name && player.age ? "Save" : "Add"}
                 </button>
