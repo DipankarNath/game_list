@@ -45,7 +45,7 @@ const Player: React.FC<{
                         type="text"
                         placeholder="Player Name"
                         value={name}
-                        className="w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-[#005e91]"
+                        className="w-full rounded-md border-0 p-2 ring-1 text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-[#005e91]"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             onChange({type: "NAME", value: e.target.value})
                         }
@@ -65,7 +65,7 @@ const Player: React.FC<{
                         min={15}
                         max={60}
                         value={age || ""}
-                        className="w-[70px] rounded-md border-0 p-2 text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-[#005e91]"
+                        className="w-[70px] rounded-md border-0 p-2 text-gray-900 ring-1 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-[#005e91]"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             onChange({type: "AGE", value: Number(e.target.value)})
                         }
