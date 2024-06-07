@@ -1,9 +1,9 @@
 import {useEffect, useState, FC} from "react";
 import {useAppSelector, useAppDispatch} from "../../hooks";
-import {addPlayer, updatePlayer, setPlayers} from "./reducer";
+import {addPlayer, updatePlayer} from "./reducer";
 import Player from "../../components/Player";
 import {isExistingPlayer} from "../../utils";
-import useFetchData from "../../hooks/useFetchData";
+//import useFetchData from "../../hooks/useFetchData";
 
 const Dashboard: FC = () => {
     const [teamMap, setTeamMap] = useState({} as TeamMapType);
@@ -12,15 +12,15 @@ const Dashboard: FC = () => {
     const playerList = useAppSelector((state) => state.player?.data?.playerList);
 
     const dispatch = useAppDispatch();
-    const {
-        data,
-        isLoading,
-        isError
-    } = useFetchData('https://my-json-server.typicode.com/cb-dipankarnath/dataForTask/playerList');
+//    const {
+//        data,
+//        isLoading,
+//        isError
+//    } = useFetchData('https://my-json-server.typicode.com/cb-dipankarnath/dataForTask/playerList');
 
-    if (playerList.length === 0 && data?.length !== 0 && data) {
-        dispatch(setPlayers(data));
-    }
+//    if (playerList.length === 0 && data?.length !== 0 && data) {
+//        dispatch(setPlayers(data));
+//    }
 
     // validates and dispatches actions to add or update player data
     const onSaveUpdate = (player: PlayerType, isInput: boolean) => {
@@ -50,21 +50,21 @@ const Dashboard: FC = () => {
     }, [playerList]);
 
 
-    if (isLoading) {
-        return (
-            <div className="w-full flex justify-center my-12">
-                <div
-                    className={'p-16 rounded-md font-medium text-lg text-stone-600 bg-stone-100'}>{'Loading...'}</div>
-            </div>);
-    }
-
-    if (isError) {
-        return (
-            <div className="w-full flex justify-center my-12">
-                <div
-                    className={'p-16 rounded-md font-medium text-lg text-rose-600 bg-rose-100'}>{'Opps... Could not fetch your data'}</div>
-            </div>);
-    }
+//    if (isLoading) {
+//        return (
+//            <div className="w-full flex justify-center my-12">
+//                <div
+//                    className={'p-16 rounded-md font-medium text-lg text-stone-600 bg-stone-100'}>{'Loading...'}</div>
+//            </div>);
+//    }
+//
+//    if (isError) {
+//        return (
+//            <div className="w-full flex justify-center my-12">
+//                <div
+//                    className={'p-16 rounded-md font-medium text-lg text-rose-600 bg-rose-100'}>{'Opps... Could not fetch your data'}</div>
+//            </div>);
+//    }
 
     return (
         <div className="w-full flex justify-center my-12">
