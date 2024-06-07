@@ -1,0 +1,88 @@
+{
+    "playerList": [
+        {
+            "id": "1001",
+            "name": "Vishal Kaith",
+            "age": 27,
+            "sport": "football",
+            "team": "India"
+        },
+        {
+            "id": "1002",
+            "name": "Anwar Ali",
+            "age": 23,
+            "sport": "football",
+            "team": "India"
+        },
+        {
+            "id": "1003",
+            "name": "Sunil Chhetri",
+            "age": 39,
+            "sport": "football",
+            "team": "India"
+        },
+        {
+            "id": "1004",
+            "name": "David de Gea",
+            "age": 31,
+            "sport": "football",
+            "team": "spain"
+        },
+        {
+            "id": "1005",
+            "name": "Pau Torras",
+            "age": 25,
+            "sport": "football",
+            "team": "spain"
+        },
+        {
+            "id": "1006",
+            "name": "Diego Llorente",
+            "age": 28,
+            "sport": "football",
+            "team": "spain"
+        },
+        {
+            "id": "1007",
+            "name": "Dhoni",
+            "age": 40,
+            "sport": "cricket",
+            "team": "india"
+        },
+        {
+            "id": "1008",
+            "name": "Tendulkar",
+            "age": 48,
+            "sport": "cricket",
+            "team": "india"
+        },
+        {
+            "id": "1009",
+            "name": "Hardik",
+            "age": 28,
+            "sport": "cricket",
+            "team": "india"
+        },
+        {
+            "id": "1010",
+            "name": "Maxwell",
+            "age": 33,
+            "sport": "cricket",
+            "team": "india"
+        },
+        {
+            "id": "1011",
+            "name": "Zampa",
+            "age": 29,
+            "sport": "cricket",
+            "team": "india"
+        },
+        {
+            "id": "1012",
+            "name": "Wade",
+            "age": 35,
+            "sport": "cricket",
+            "team": "india"
+        }
+    ]
+}

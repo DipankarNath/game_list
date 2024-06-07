@@ -1,6 +1,4 @@
 import {useEffect, useState, FC} from "react";
-import {useAppSelector, useAppDispatch} from "../../hooks";
-import {addPlayer, updatePlayer, setPlayers} from "./reducer";
 import Player from "../../components/Player";
 import {isExistingPlayer} from "../../utils";
 import useFetchData from "../../hooks/useFetchData";
@@ -8,38 +6,30 @@ import useFetchData from "../../hooks/useFetchData";
 const Dashboard: FC = () => {
     const [teamMap, setTeamMap] = useState({} as TeamMapType);
 
-    // getting player list data from redux
-    const playerList = useAppSelector((state) => state.player?.data?.playerList);
-
-    const dispatch = useAppDispatch();
     const {
         data,
         isLoading,
         isError
     } = useFetchData('https://my-json-server.typicode.com/cb-dipankarnath/dataForTask/playerList');
 
-    if (playerList.length === 0 && data?.length !== 0 && data) {
-        dispatch(setPlayers(data));
-    }
-
     // validates and dispatches actions to add or update player data
     const onSaveUpdate = (player: PlayerType, isInput: boolean) => {
-        const isExisting = isExistingPlayer(player, playerList);
+        const isExisting = isExistingPlayer(player, data!);
         if (isInput) {
             if (isExisting) {
                 alert("Player Already Exist With That Name!!");
             } else {
-                dispatch(addPlayer(player));
+                // add player
             }
         } else {
-            dispatch(updatePlayer(player));
+            // update player
         }
     };
 
     useEffect(() => {
         // structuring flat team data received from redux
         const tempTeamMap = {} as TeamMapType;
-        playerList.forEach((player: PlayerType) => {
+        data?.forEach((player: PlayerType) => {
             tempTeamMap[player.sport]?.[player.team]?.push(player) ||
             (tempTeamMap[player.sport]
                 ? (tempTeamMap[player.sport][player.team] = [player])
@@ -47,7 +37,7 @@ const Dashboard: FC = () => {
         });
 
         setTeamMap(tempTeamMap);
-    }, [playerList]);
+    }, [isLoading]);
 
 
     if (isLoading) {
