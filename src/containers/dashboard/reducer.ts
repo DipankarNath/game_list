@@ -109,7 +109,7 @@ export const updatePlayer = createAsyncThunk(
     }
 );
 
-export const counterSlice = createSlice({
+export const playerSlice = createSlice({
     name: 'dashboard',
     initialState,
     reducers: {},
@@ -141,4 +141,4 @@ export const counterSlice = createSlice({
     },
 });
 
-export default counterSlice.reducer;
+export default playerSlice.reducer;
